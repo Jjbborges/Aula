@@ -1,0 +1,22 @@
+# Após mostrar o resumo do pedido e simular empacotamento
+Write-Host "`nDeseja finalizar o pedido ou cancelar e voltar ao menu?" -ForegroundColor Yellow
+Write-Host "1 - Finalizar pedido"
+Write-Host "2 - Cancelar e voltar ao início"
+$escolhaFinal = Read-Host "Digite a opção desejada"
+
+switch ($escolhaFinal) {
+    "1" {
+        Write-Host "`n✅ Pedido finalizado com sucesso! Obrigado por comprar na BelaJuKa!" -ForegroundColor Green
+        # Aqui você pode manter o salvamento do arquivo normalmente
+    }
+    "2" {
+        Write-Host "`n❌ Pedido cancelado. Retornando ao menu principal..." -ForegroundColor Red
+        Start-Sleep -Seconds 2
+        # Opcional: reiniciar o script (recursivamente ou com loop externo)
+        powershell -File $MyInvocation.MyCommand.Path
+        exit
+    }
+    default {
+        Write-Host "`nOpção inválida. Finalizando por padrão." -ForegroundColor DarkYellow
+    }
+}

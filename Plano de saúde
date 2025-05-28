@@ -1,0 +1,18 @@
+# Pergunta ao usuário se ele tem plano de saúde
+$temPlano = Read-Host "Você tem plano de saúde? (S/N)"
+
+if ($temPlano -eq 'S' -or $temPlano -eq 's') {
+    # Verifica se o salário bruto é um número válido
+    if ([double]::TryParse($salarioBruto, [ref]$null)) {
+        $salarioBruto = [double]$salarioBruto
+        $desconto = 250
+        $salarioLiquido = $salarioBruto - $desconto
+
+        Write-Host "R$$desconto desconto aplicado."
+        Write-Host "Seu salário líquido é: R$$salarioLiquido"
+    } else {
+        Write-Host "Valor de salário inválido. Encerrando..."
+    }
+} else {
+    Write-Host "Você não possui plano de saúde. Nenhum desconto aplicado."
+}

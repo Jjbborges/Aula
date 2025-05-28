@@ -1,18 +1,40 @@
-# Pergunta ao usuário se ele tem plano de saúde
+# Pergunta se o usuário tem plano de saúde
 $temPlano = Read-Host "Você tem plano de saúde? (S/N)"
 
-if ($temPlano -eq 'S' -or $temPlano -eq 's') {
-    # Verifica se o salário bruto é um número válido
-    if ([double]::TryParse($salarioBruto, [ref]$null)) {
-        $salarioBruto = [double]$salarioBruto
-        $desconto = 250
-        $salarioLiquido = $salarioBruto - $desconto
+# Inicializa o total de desconto
+$descontoTotal = 0
 
-        Write-Host "R$$desconto desconto aplicado."
-        Write-Host "Seu salário líquido é: R$$salarioLiquido"
+if ($temPlano -eq 'S' -or $temPlano -eq 's') {
+    $descontoTotal += 250
+}
+
+# Pergunta se o usuário tem dependentes
+$temDependentes = Read-Host "Você possui dependentes? (S/N)"
+
+if ($temDependentes -eq 'S' -or $temDependentes -eq 's') {
+    $qtdDependentes = Read-Host "Quantos dependentes você possui? (máximo 3)"
+
+    # Verifica se é número válido e dentro do limite
+    if ([int]::TryParse($qtdDependentes, [ref]$null)) {
+        $qtdDependentes = [int]$qtdDependentes
+        if ($qtdDependentes -gt 3) {
+            $qtdDependentes = 3
+        }
+
+        $descontoDependentes = $qtdDependentes * 160
+        $descontoTotal += $descontoDependentes
     } else {
-        Write-Host "Valor de salário inválido. Encerrando..."
+        Write-Host "Número de dependentes inválido. Nenhum desconto por dependentes aplicado."
     }
+}
+
+# Calcula salário líquido
+if ([double]::TryParse($salarioBruto, [ref]$null)) {
+    $salarioBruto = [double]$salarioBruto
+    $salarioLiquido = $salarioBruto - $descontoTotal
+
+    Write-Host "Desconto total: R$$descontoTotal"
+    Write-Host "Salário líquido: R$$salarioLiquido"
 } else {
-    Write-Host "Você não possui plano de saúde. Nenhum desconto aplicado."
+    Write-Host "Salário bruto inválido."
 }
